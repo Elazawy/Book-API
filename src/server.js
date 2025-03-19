@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import express from 'express';
-import 'dotenv/config'; // This automatically loads .env variables
 import morgan from 'morgan';
 import { bookRouter } from './routes/book.routes.js';
+import { authRouter } from './routes/auth.routes.js';
 import mongoose from 'mongoose';
 
 export const app = express();
@@ -19,10 +20,18 @@ const connectToDb = async () => {
 };
 
 connectToDb();
-app.use(bookRouter);
+app.use('/api', bookRouter);
+app.use('/api', authRouter); 
 
-// Start the server
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Please use a different port.`);
+        process.exit(1);
+    } else {
+        throw err;
+    }
 });
