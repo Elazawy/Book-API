@@ -23,7 +23,6 @@ connectToDb();
 app.use('/api', bookRouter);
 app.use('/api', authRouter); 
 
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
