@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ message: 'No token provided.' });
     }
     try {
-        const unhashed = jwt.verify(token, process.env.JWT_SECRET);
+        const unhashed = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
         req.user = unhashed;
         next();
     } catch (error) {
